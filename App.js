@@ -50,7 +50,11 @@ class App extends Component<{}> {
 			<View style={styles.container}>
 				<Header onPressNew={this.onPressNew}
 				/>
-				<Text style={styles.gameState}>Selected cards: {selectedCards.length}</Text>
+				<Text style={styles.gameState}>
+					Selected cards: {selectedCards.length}.
+					Correct pairs: {correctPairs}.
+					Pairs clicked: {pairsClicked}.
+				</Text>
 				<ScrollView style={{
 					flexDirection: 'row',
 					flexWrap: 'wrap',}}>
