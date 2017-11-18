@@ -41,47 +41,47 @@ const initialState = {
 	selectedCards: [],
 	pairsClicked: 0,
 	correctPairs: 0,
-	previousCard: null
+	previousCardIndex: null
 }
 
 function selectCard (card) {
 
-  if (selectedCards.length===1) {
-  	//If the user has selected a card in the last turn
-    selectedCards.push(card);
-    pairsClicked++;
+	if (selectedCards.length===1) {
+		//If the user has selected a card in the last turn
+		selectedCards.push(card);
+		pairsClicked++;
 
-    flipCard(card)
+		flipCard(card)
 
-    if (card.color===previousCard.color) { 
-    //Compare the newly selected card to the previously selected card. 
-    //Are they of the same type?
-      correctPairs++;
-      previousCard.isFlipped = true;
-      card.isFlipped = true;
-      selectedCards = [];
-    } else { 
-      //If no
-      //Possibly add some styling to tell the user "Wrong Guess"
-      //Flip both cards back to the "back side"
-      setTimeout(function(){
-        card.isFlipped = false
-        previousCard.isFlipped = false
-      }, 500);
+		if (card.color===previousCard.color) { 
+		//Compare the newly selected card to the previously selected card. 
+		//Are they of the same type?
+			correctPairs++;
+			previousCard.isFlipped = true;
+			card.isFlipped = true;
+			selectedCards = [];
+		} else { 
+			//If no
+			//Possibly add some styling to tell the user "Wrong Guess"
+			//Flip both cards back to the "back side"
+			setTimeout(function(){
+				card.isFlipped = false
+				previousCard.isFlipped = false
+			}, 500);
 
-      //need to restart
-      selectedCards= [];
-    }
+			//need to restart
+			selectedCards= [];
+		}
 
-  } else {
-    //If the user has not selected a card in the last turn
-  //  Add the card to the selectedCards array and move on
- 		selectedCards.push(card);
-    previousCard=card;
+	} else {
+		//If the user has not selected a card in the last turn
+	//  Add the card to the selectedCards array and move on
+		selectedCards.push(card);
+		previousCard=card;
 
-    flipCard()
+		flipCard()
 
-  }
+	}
 };
 
 //Function to handle actions and update the state
@@ -96,12 +96,15 @@ export const reducer = (state = initialState, action) => {
 				cards: cards.map((item, i) => {
 					if(i === payload && !item.isFlipped && selectedCards.length<2){
 						item.isFlipped = true
-						selectedCards.push(item)
+						let selectItem=item
+						selectItem.index = i
+						selectedCards.push(selectItem)
 					}
 					return item
 				}),
 				pairsClicked: selectedCards.length===2 ? state.pairsClicked+1 : state.pairsClicked,
 				correctPairs: selectedCards.length===2 && selectedCards[0].color===selectedCards[1].color ? state.correctPairs+1 : state.correctPairs,
+				selectedCards: selectedCards.length===2 ? [] : selectedCards,
 			}
 		}
 		case types.NEW_GAME: {
