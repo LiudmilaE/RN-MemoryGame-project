@@ -41,48 +41,19 @@ const initialState = {
 	selectedCards: [],
 	pairsClicked: 0,
 	correctPairs: 0,
-	previousCardIndex: null
 }
 
-function selectCard (card) {
-
-	if (selectedCards.length===1) {
+//RULES
 		//If the user has selected a card in the last turn
-		selectedCards.push(card);
-		pairsClicked++;
-
-		flipCard(card)
-
-		if (card.color===previousCard.color) { 
 		//Compare the newly selected card to the previously selected card. 
 		//Are they of the same type?
-			correctPairs++;
-			previousCard.isFlipped = true;
-			card.isFlipped = true;
-			selectedCards = [];
-		} else { 
 			//If no
 			//Possibly add some styling to tell the user "Wrong Guess"
 			//Flip both cards back to the "back side"
-			setTimeout(function(){
-				card.isFlipped = false
-				previousCard.isFlipped = false
-			}, 500);
-
-			//need to restart
-			selectedCards= [];
-		}
-
-	} else {
+			//need to restart cards
 		//If the user has not selected a card in the last turn
-	//  Add the card to the selectedCards array and move on
-		selectedCards.push(card);
-		previousCard=card;
+		//Add the card to the selectedCards array and move on
 
-		flipCard()
-
-	}
-};
 
 //Function to handle actions and update the state
 export const reducer = (state = initialState, action) => {
@@ -136,36 +107,3 @@ export const reducer = (state = initialState, action) => {
 
 	return state
 }
-
-/*
-			if (selectedCards.length === 1) {//If the user has selected a card in the last turn
-				return {
-					...state,
-					pairsClicked: pairsClicked++,
-					cards: cards.map((item, i) => {
-						if(i === payload){
-							item.isFlipped = !item.isFlipped
-							selectedCards.push(item)
-						}
-						return item
-					}),
-				}
-			} else { 
-				//If the user has not selected a card in the last turn
-				//  Add the card to the selectedCards array and move on
-				return {
-					...state,
-					selectedCards: cards.filter((item, i) => {
-						return i === payload
-					}),
-					previousCard: selectedCards[0],
-					cards: cards.map((item, i) => {//FlipCard
-						if(i === payload){
-							item.isFlipped = true
-							selectedCards.push(item)
-						}
-						return item
-					}),
-				}
-			}
-			*/

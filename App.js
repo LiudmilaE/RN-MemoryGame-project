@@ -58,19 +58,35 @@ class App extends Component<{}> {
 			})
 		}
 
+		if(correctPairs===12){
+			return (
+				<View style={styles.container}>
+				<Header onPressNew={this.onPressNew}
+				/>
+				<Text styles={textWin}>YOU WIN!</Text>
+				<Text style={styles.gameState}>
+					Correct pairs: {correctPairs}.
+					Pairs clicked: {pairsClicked}.
+				</Text>
+			</View>
+				) 
+		}
+
 		return (
 			<View style={styles.container}>
 				<Header onPressNew={this.onPressNew}
 				/>
 				<Text style={styles.gameState}>
-					Selected cards: {selectedCards.length}.
 					Correct pairs: {correctPairs}.
 					Pairs clicked: {pairsClicked}.
 				</Text>
 				<ScrollView style={{
 					flexDirection: 'row',
 					flexWrap: 'wrap',
-					marginLeft: 10}}>
+					marginLeft: 20,
+					marginRight: 20,
+					padding: 'auto',
+					marginBottom: 10}}>
 					<Card 
 					list={cards}
 					onFlipCard={this.onFlipCard}
