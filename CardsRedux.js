@@ -91,20 +91,33 @@ export const reducer = (state = initialState, action) => {
 
 	switch (type) {
 		case types.FLIP_CARD: {
-			return {
-				...state,
-				cards: cards.map((item, i) => {
-					if(i === payload && !item.isFlipped && selectedCards.length<2){
-						item.isFlipped = true
-						let selectItem=item
-						selectItem.index = i
-						selectedCards.push(selectItem)
-					}
-					return item
-				}),
-				pairsClicked: selectedCards.length===2 ? state.pairsClicked+1 : state.pairsClicked,
-				correctPairs: selectedCards.length===2 && selectedCards[0].color===selectedCards[1].color ? state.correctPairs+1 : state.correctPairs,
-				selectedCards: selectedCards.length===2 ? [] : selectedCards,
+			if(selectedCards.length<2){
+				return {
+					...state,
+					cards: cards.map((item, i) => {
+						if(i === payload && !item.isFlipped && selectedCards.length<2){
+							item.isFlipped = true
+							let selectItem=item
+							selectItem.index = i
+							selectedCards.push(selectItem)
+						}
+						return item
+					}),
+					pairsClicked: selectedCards.length===2 ? state.pairsClicked+1 : state.pairsClicked,
+					correctPairs: selectedCards.length===2 && selectedCards[0].color===selectedCards[1].color ? state.correctPairs+1 : state.correctPairs,
+				}
+			}
+			if(selectedCards.length===2){
+				return {
+					...state,
+					cards: cards.map((item, i) => {
+						if(item.isFlipped && selectedCards[0].color !== selectedCards[1].color && (i === selectedCards[0].index || i === selectedCards[1].index)){
+							item.isFlipped = false
+						}
+						return item
+					}),
+					selectedCards: [],
+				}
 			}
 		}
 		case types.NEW_GAME: {

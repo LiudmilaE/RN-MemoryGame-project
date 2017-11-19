@@ -43,8 +43,18 @@ class App extends Component<{}> {
 		dispatch(actionCreators.newGame())
 	}
 
+	// onResetCards = () => {
+	// 	const {dispatch} = this.props
+
+	// 	dispatch(actionCreators.resetCards())
+	// }
+
 	render() {
 		const {cards, pairsClicked, correctPairs, selectedCards} = this.props
+
+		// if(selectedCards.length===2){
+		// 	onResetCards()
+		// }
 
 		return (
 			<View style={styles.container}>
@@ -57,7 +67,8 @@ class App extends Component<{}> {
 				</Text>
 				<ScrollView style={{
 					flexDirection: 'row',
-					flexWrap: 'wrap',}}>
+					flexWrap: 'wrap',
+					marginLeft: 10}}>
 					<Card 
 					list={cards}
 					onFlipCard={this.onFlipCard}
