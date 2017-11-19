@@ -52,9 +52,11 @@ class App extends Component<{}> {
 	render() {
 		const {cards, pairsClicked, correctPairs, selectedCards} = this.props
 
-		// if(selectedCards.length===2){
-		// 	onResetCards()
-		// }
+		if(selectedCards.length===2){
+			setTimeout(() => {
+				this.onFlipCard(selectedCards[0].index, 300)
+			})
+		}
 
 		return (
 			<View style={styles.container}>
