@@ -10,7 +10,9 @@ import {
 	StyleSheet,
 	Text,
 	View,
-	ScrollView
+	ScrollView,
+	Animated,
+	Easing
 } from 'react-native';
 import { createStore } from 'redux'
 import { Provider, connect } from 'react-redux'
@@ -31,6 +33,11 @@ const mapStateToProps = (state) => ({
 
 class App extends Component<{}> {
 
+	constructor() {
+		super()
+		this.animatedValue = new Animated.Value(0)
+	}
+
 	onFlipCard = (index) => {
 		const {dispatch} = this.props
 
@@ -41,6 +48,21 @@ class App extends Component<{}> {
 		const {dispatch} = this.props
 
 		dispatch(actionCreators.newGame())
+	}
+
+	animate(){
+		this.animatedValue.setValue(0)
+		Animated.timing(
+			this.animatedValue, 
+			{
+				toValue: 1,
+				duration: 1000,
+				easing: Easing.ease,
+		}).start()
+	}
+
+	componentDidMount () {
+		this.animate()
 	}
 
 	// onResetCards = () => {
@@ -57,22 +79,33 @@ class App extends Component<{}> {
 				this.onFlipCard(selectedCards[0].index, 300)
 			})
 		}
+		
+		const spinText = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: ['0deg', '720deg']
+		})
 
 		if(correctPairs===12){
 			return (
 				<View style={styles.container}>
 				<Header onPressNew={this.onPressNew}
 				/>
-				<Text styles={textWin}>YOU WIN!</Text>
-				<Text style={styles.gameState}>
-					Correct pairs: {correctPairs}.
-					Pairs clicked: {pairsClicked}.
-				</Text>
+				<View style={styles.container}>
+					<Animated.View style={
+						{ marginTop: 20, 
+							transform: [{rotate: spinText}] }
+					}>
+						<Text style={styles.textWin}>YOU WIN!</Text>
+					</Animated.View>
+					<Text style={[styles.gameState, {fontSize: 35}]}>
+						Correct pairs: {correctPairs}.
+						Pairs clicked: {pairsClicked}.
+					</Text>
+				</View>
 			</View>
 				) 
-		}
-
-		return (
+		} else {
+			return (
 			<View style={styles.container}>
 				<Header onPressNew={this.onPressNew}
 				/>
@@ -95,15 +128,17 @@ class App extends Component<{}> {
 			</View>
 		);
 	}
+		
+	}
 }
 
 App = connect(mapStateToProps)(App)
 
 const AppWithStore = () => (
-  <Provider store={store}>
-    <App />
-  </Provider>
-  )
+	<Provider store={store}>
+		<App />
+	</Provider>
+	)
 
 export default AppWithStore
 
@@ -115,5 +150,15 @@ const styles = StyleSheet.create({
 	gameState: {
 		fontSize: 17,
 		textAlign: 'center',
+	},
+	textWin: {
+		fontSize: 50,
+		textAlign: 'center',
+	},
+	winSign: {
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		height: 500,
 	}
 });
