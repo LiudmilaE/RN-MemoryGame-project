@@ -31,7 +31,7 @@ const mapStateToProps = (state) => ({
 })
 
 
-class App extends Component<{}> {
+class App extends Component {
 
 	constructor() {
 		super()
@@ -65,14 +65,12 @@ class App extends Component<{}> {
 		this.animate()
 	}
 
-	// onResetCards = () => {
-	// 	const {dispatch} = this.props
-
-	// 	dispatch(actionCreators.resetCards())
-	// }
-
 	render() {
 		const {cards, pairsClicked, correctPairs, selectedCards} = this.props
+		const spinText = this.animatedValue.interpolate({
+			inputRange: [0, 1],
+			outputRange: ['0deg', '720deg']
+		})
 
 		if(selectedCards.length===2){
 			setTimeout(() => {
@@ -80,55 +78,38 @@ class App extends Component<{}> {
 			})
 		}
 		
-		const spinText = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: ['0deg', '720deg']
-		})
-
 		if(correctPairs===12){
 			return (
 				<View style={styles.container}>
-				<Header onPressNew={this.onPressNew}
-				/>
+					<Header onPressNew={this.onPressNew}/>
+					<View style={styles.container}>
+						<Animated.View style={{ marginTop: 20, 
+								transform: [{rotate: spinText}] }}>
+							<Text style={styles.textWin}>YOU WIN!</Text>
+						</Animated.View>
+						<Text style={[styles.gameState, {fontSize: 35}]}>
+							Correct pairs: {correctPairs}.
+							Pairs clicked: {pairsClicked}.
+						</Text>
+					</View>
+				</View>
+			) 
+		} else {
+				return (
 				<View style={styles.container}>
-					<Animated.View style={
-						{ marginTop: 20, 
-							transform: [{rotate: spinText}] }
-					}>
-						<Text style={styles.textWin}>YOU WIN!</Text>
-					</Animated.View>
-					<Text style={[styles.gameState, {fontSize: 35}]}>
+					<Header onPressNew={this.onPressNew}/>
+					<Text style={styles.gameState}>
 						Correct pairs: {correctPairs}.
 						Pairs clicked: {pairsClicked}.
 					</Text>
+					<ScrollView style={styles.scrollContainer}>
+						<Card 
+							list={cards}
+							onFlipCard={this.onFlipCard}/>
+					</ScrollView>
 				</View>
-			</View>
-				) 
-		} else {
-			return (
-			<View style={styles.container}>
-				<Header onPressNew={this.onPressNew}
-				/>
-				<Text style={styles.gameState}>
-					Correct pairs: {correctPairs}.
-					Pairs clicked: {pairsClicked}.
-				</Text>
-				<ScrollView style={{
-					flexDirection: 'row',
-					flexWrap: 'wrap',
-					marginLeft: 20,
-					marginRight: 20,
-					padding: 'auto',
-					marginBottom: 10}}>
-					<Card 
-					list={cards}
-					onFlipCard={this.onFlipCard}
-					/>
-				</ScrollView>
-			</View>
-		);
-	}
-		
+			)
+		}	
 	}
 }
 
@@ -150,6 +131,14 @@ const styles = StyleSheet.create({
 	gameState: {
 		fontSize: 17,
 		textAlign: 'center',
+	},
+	scrollContainer: {
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		marginLeft: 20,
+		marginRight: 20,
+		padding: 'auto',
+		marginBottom: 10,
 	},
 	textWin: {
 		fontSize: 50,

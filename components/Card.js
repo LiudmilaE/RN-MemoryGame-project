@@ -20,7 +20,6 @@ export default class Card extends Component {
 	state = {
 		animationFront: animations[0],
 		animationBack: animations[1],
-		//isFlipped: false,
 		}
 
 	renderCard = (card, i) => {
@@ -54,7 +53,6 @@ export default class Card extends Component {
 		return (
 			<View style={{
 					display: 'flex',
-					//flexDirection: 'row',
 					flexWrap: 'wrap',}}>
 			{list.map(this.renderCard)}
 			</View>
