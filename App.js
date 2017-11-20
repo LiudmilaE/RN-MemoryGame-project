@@ -56,9 +56,9 @@ class App extends Component<{}> {
 			this.animatedValue, 
 			{
 				toValue: 1,
-				duration: 1000,
+				duration: 3000,
 				easing: Easing.ease,
-		}).start()
+		}).start(()=> this.animate())
 	}
 
 	componentDidMount () {
@@ -154,11 +154,14 @@ const styles = StyleSheet.create({
 	textWin: {
 		fontSize: 50,
 		textAlign: 'center',
+		marginTop: 200,
+		color: '#008080',
+		alignSelf: 'center',
 	},
 	winSign: {
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: 500,
+		height: 300,	
 	}
 });
