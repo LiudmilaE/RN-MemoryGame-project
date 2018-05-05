@@ -22,6 +22,8 @@ const yellow = '#ffe119'
 const blue = '#0082c8'
 const orange = '#f58231'
 const purple = '#911eb4'
+const steelBlue = '#4682B4'
+const sandyBrown = '#F4A460'
 
 const colors = [red, green, yellow, blue, orange, purple]
 var cards = []

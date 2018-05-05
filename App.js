@@ -74,8 +74,8 @@ class App extends Component {
 
 		if(selectedCards.length===2){
 			setTimeout(() => {
-				this.onFlipCard(selectedCards[0].index, 300)
-			})
+				this.onFlipCard(selectedCards[0].index)
+			}, 300)
 		}
 		
 		if(correctPairs===12){
@@ -98,15 +98,18 @@ class App extends Component {
 				return (
 				<View style={styles.container}>
 					<Header onPressNew={this.onPressNew}/>
+					<View style={{height: 30, padding: 5}}>
 					<Text style={styles.gameState}>
 						Correct pairs: {correctPairs}.
 						Pairs clicked: {pairsClicked}.
 					</Text>
+					</View>
 					<ScrollView style={styles.scrollContainer}>
 						<Card 
 							list={cards}
 							onFlipCard={this.onFlipCard}/>
 					</ScrollView>
+					<View style={{height: 0}}></View>
 				</View>
 			)
 		}	
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F5FCFF',
 	},
 	gameState: {
-		fontSize: 17,
+		fontSize: 20,
 		textAlign: 'center',
 	},
 	scrollContainer: {
